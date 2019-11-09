@@ -187,9 +187,9 @@ namespace BlockchainSimulation2.Controllers
 
         // GET: api/blockchain/0x2face0x
         [HttpGet("block/{hash}")]
-        public Block Get(string hash)
+        public BlockResponseDto Get(string hash)
         {
-            return _context.Blocks.FirstOrDefault(b => b.Hash == hash);
+            return _context.Blocks.FirstOrDefault(b => b.Hash == hash)?.ToResponseDto();
         }
 
         // GET: api/blockchain/blocks
@@ -203,7 +203,7 @@ namespace BlockchainSimulation2.Controllers
         [HttpGet("transaction/{hash}")]
         public TransactionResponseDto GetTransaction(string hash)
         {
-            return _context.Transactions.FirstOrDefault(b => b.Hash == hash).ToResponseDto();
+            return _context.Transactions.FirstOrDefault(b => b.Hash == hash)?.ToResponseDto();
         }
 
         // GET: api/blockchain/blocks
