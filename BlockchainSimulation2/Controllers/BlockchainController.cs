@@ -100,7 +100,7 @@ namespace BlockchainSimulation2.Controllers
                 MoneyAmount = 1222.23m
             };
 
-            var miner1 = new Miner
+            var miner1 = new Client
             {
                 Hash = GetGuid(),
                 Type = ClientType.Client,
@@ -109,7 +109,7 @@ namespace BlockchainSimulation2.Controllers
                 Transactions = new List<Transaction>(),
                 MinedBlocks = new List<Block>()
             };
-            var miner2 = new Miner
+            var miner2 = new Client
             {
                 Hash = GetGuid(),
                 Type = ClientType.Client,
@@ -118,7 +118,7 @@ namespace BlockchainSimulation2.Controllers
                 Transactions = new List<Transaction>(),
                 MinedBlocks = new List<Block>()
             };
-            var miner3 = new Miner
+            var miner3 = new Client
             {
                 Hash = GetGuid(),
                 Type = ClientType.Miner,
@@ -166,9 +166,9 @@ namespace BlockchainSimulation2.Controllers
             block2.Miner = miner3;
             block3.Miner = miner3;
 
-            _context.Miners.Add(miner1);
-            _context.Miners.Add(miner2);
-            _context.Miners.Add(miner3);
+            _context.Clients.Add(miner1);
+            _context.Clients.Add(miner2);
+            _context.Clients.Add(miner3);
             _context.Transactions.Add(transaction1);
             _context.Transactions.Add(transaction2);
             _context.Transactions.Add(transaction3);
@@ -207,17 +207,17 @@ namespace BlockchainSimulation2.Controllers
         }
 
         // GET: api/blockchain/blocks
-        [HttpGet("miners")]
-        public IEnumerable<MinerResponseDto> GetMiners()
+        [HttpGet("clients")]
+        public IEnumerable<ClientResponseDto> GetMiners()
         {
-            return _context.Miners.OrderByDescending(m => m.StartDate).ToResponseDto();
+            return _context.Clients.OrderByDescending(m => m.StartDate).ToResponseDto();
         }
 
         // GET: api/blockchain/0x2face0x
-        [HttpGet("miner/{hash}")]
-        public MinerResponseDto GetMiner(string hash)
+        [HttpGet("client/{hash}")]
+        public ClientResponseDto GetMiner(string hash)
         {
-            return _context.Miners.FirstOrDefault(b => b.Hash == hash).ToResponseDto();
+            return _context.Clients.FirstOrDefault(b => b.Hash == hash).ToResponseDto();
         }
 
     }

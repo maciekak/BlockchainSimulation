@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlockchainSimulation2.Database
 {
-    public class Miner
+    public class Client
     {
         public string Hash { get; set; }
         public ClientType Type { get; set; }

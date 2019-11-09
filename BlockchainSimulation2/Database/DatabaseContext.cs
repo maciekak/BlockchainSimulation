@@ -7,7 +7,7 @@ namespace BlockchainSimulation2.Database
     {
         private const string TransactionsKey = "transactions";
         private const string BlocksKey = "blocks";
-        private const string MinersKey = "miners";
+        private const string ClientsKey = "clients";
 
         private readonly IMemoryCache _memoryCache;
 
@@ -17,13 +17,13 @@ namespace BlockchainSimulation2.Database
 
             _memoryCache.Set(TransactionsKey, new List<Transaction>());
             _memoryCache.Set(BlocksKey, new List<Block>());
-            _memoryCache.Set(MinersKey, new List<Miner>());
+            _memoryCache.Set(ClientsKey, new List<Client>());
         }
 
         public ICollection<Transaction> Transactions => (ICollection<Transaction>) _memoryCache.Get(TransactionsKey);
 
         public ICollection<Block> Blocks => (ICollection<Block>)_memoryCache.Get(BlocksKey);
 
-        public ICollection<Miner> Miners => (ICollection<Miner>)_memoryCache.Get(MinersKey);
+        public ICollection<Client> Clients => (ICollection<Client>)_memoryCache.Get(ClientsKey);
     }
 }

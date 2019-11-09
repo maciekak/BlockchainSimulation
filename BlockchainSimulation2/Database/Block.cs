@@ -16,7 +16,7 @@ namespace BlockchainSimulation2.Database
         public decimal TotalReceivedAmount { get; set; }
         public decimal TotalBalance { get; set; }
 
-        public Miner Miner { get; set; }
+        public Client Miner { get; set; }
         public Block ParentBlock { get; set; }
         public Block ChildBlock { get; set; }
         public ICollection<Transaction> Transactions { get; set; }

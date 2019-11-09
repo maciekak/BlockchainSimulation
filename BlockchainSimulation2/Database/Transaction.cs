@@ -9,8 +9,8 @@ namespace BlockchainSimulation2.Database
         public decimal MoneyAmount { get; set; }
         public double GasAmount { get; set; }
 
-        public Miner SourceClient { get; set; }
-        public Miner DestinationClient { get; set; }
+        public Client SourceClient { get; set; }
+        public Client DestinationClient { get; set; }
         public Block Block { get; set; }
     }
 }

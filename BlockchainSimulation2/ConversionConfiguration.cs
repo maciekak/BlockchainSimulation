@@ -28,7 +28,7 @@ namespace BlockchainSimulation2
                         opt => opt.MapFrom(src => src.DestinationClient.Hash))
                     .ForMember(dest => dest.SourceClientHash, opt => opt.MapFrom(src => src.SourceClient.Hash));
 
-                cfg.CreateMap<Miner, MinerResponseDto>(MemberList.Destination)
+                cfg.CreateMap<Client, ClientResponseDto>(MemberList.Destination)
                     .ForMember(dest => dest.MinedBlocksHashes,
                         opt => opt.MapFrom(src => src.MinedBlocks.Select(m => m.Hash)))
                     .ForMember(dest => dest.TransactionsHashes,
@@ -50,14 +50,14 @@ namespace BlockchainSimulation2
             return _mapper.Map<Block, BlockResponseDto>(from);
         }
 
-        public static IEnumerable<MinerResponseDto> ToResponseDto(this IEnumerable<Miner> from)
+        public static IEnumerable<ClientResponseDto> ToResponseDto(this IEnumerable<Client> from)
         {
-            return _mapper.Map<IEnumerable<Miner>, IEnumerable<MinerResponseDto>>(from);
+            return _mapper.Map<IEnumerable<Client>, IEnumerable<ClientResponseDto>>(from);
         }
 
-        public static MinerResponseDto ToResponseDto(this Miner from)
+        public static ClientResponseDto ToResponseDto(this Client from)
         {
-            return _mapper.Map<Miner, MinerResponseDto>(from);
+            return _mapper.Map<Client, ClientResponseDto>(from);
         }
 
         public static IEnumerable<TransactionResponseDto> ToResponseDto(this IEnumerable<Transaction> from)

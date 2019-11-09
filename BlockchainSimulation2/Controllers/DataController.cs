@@ -48,6 +48,12 @@ namespace BlockchainSimulation2.Controllers
             if (parentBlock != null) parentBlock.ChildBlock = block;
             block.ParentBlock = parentBlock;
 
+            var client = _context.Clients
+                .FirstOrDefault(c => c.Hash == dto.MinerHash);
+
+            client?.MinedBlocks.Add(block);
+            block.Miner = client;
+
             _context.Blocks.Add(block);
         }
 
@@ -68,10 +74,10 @@ namespace BlockchainSimulation2.Controllers
             transaction.Block = block;
             block?.Transactions.Add(transaction);
 
-            var sourceClient = _context.Miners
+            var sourceClient = _context.Clients
                 .FirstOrDefault(m => m.Hash == dto.SourceClientHash);
 
-            var destinationClient = _context.Miners
+            var destinationClient = _context.Clients
                 .FirstOrDefault(m => m.Hash == dto.DestinationClientHash);
 
             transaction.SourceClient = sourceClient;
@@ -84,9 +90,9 @@ namespace BlockchainSimulation2.Controllers
 
         // POST: api/data/add/client
         [HttpPost("add/client")]
-        public void Post([FromBody] MinerRequestDto dto)
+        public void Post([FromBody] ClientRequestDto dto)
         {
-            var miner = new Miner
+            var client = new Client
             {
                 Hash = dto.Hash,
                 Type = dto.Type,
@@ -99,10 +105,10 @@ namespace BlockchainSimulation2.Controllers
                 .Where(b => dto.MinedBlocksHashes.Contains(b.Hash))
                 .ToList();
 
-            blocks.ForEach(b => b.Miner = miner);
-            miner.MinedBlocks = blocks;
+            blocks.ForEach(b => b.Miner = client);
+            client.MinedBlocks = blocks;
 
-            _context.Miners.Add(miner);
+            _context.Clients.Add(client);
         }
     }
 }

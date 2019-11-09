@@ -4,7 +4,7 @@ using BlockchainSimulation2.Database;
 
 namespace BlockchainSimulation2.Dtos
 {
-    public class MinerRequestDto
+    public class ClientRequestDto
     {
         public string Hash { get; set; }
         public ClientType Type { get; set; }
