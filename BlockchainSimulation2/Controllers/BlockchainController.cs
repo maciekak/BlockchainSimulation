@@ -130,6 +130,8 @@ namespace BlockchainSimulation2.Controllers
 
             block2.ParentBlock = block1;
             block3.ParentBlock = block2;
+            block1.ChildBlock = block2;
+            block2.ChildBlock = block3;
 
             block1.Transactions.Add(transaction1);
             block2.Transactions.Add(transaction2);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BlockchainSimulation2.Dtos
 {
@@ -6,7 +7,7 @@ namespace BlockchainSimulation2.Dtos
     {
         public int Id { get; set; }
         public string Hash { get; set; }
-        public string MinedDate { get; set; }
+        public DateTime MinedDate { get; set; }
         public int TransactionCount { get; set; }
         public double Size { get; set; }
         public double GasAmount { get; set; }

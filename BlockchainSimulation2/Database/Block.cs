@@ -18,6 +18,7 @@ namespace BlockchainSimulation2.Database
 
         public Miner Miner { get; set; }
         public Block ParentBlock { get; set; }
+        public Block ChildBlock { get; set; }
         public ICollection<Transaction> Transactions { get; set; }
     }
 }

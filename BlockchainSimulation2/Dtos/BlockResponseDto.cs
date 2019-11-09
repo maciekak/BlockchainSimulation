@@ -18,6 +18,7 @@ namespace BlockchainSimulation2.Dtos
 
         public string MinerHash { get; set; }
         public string ParentHash { get; set; }
+        public string ChildHash { get; set; }
         public IEnumerable<string> TransactionsHashes { get; set; }
     }
 }

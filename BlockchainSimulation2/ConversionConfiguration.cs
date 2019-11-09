@@ -19,7 +19,8 @@ namespace BlockchainSimulation2
                     .ForMember(dest => dest.MinerHash, opt => opt.MapFrom(src => src.Miner.Hash))
                     .ForMember(dest => dest.TransactionsHashes,
                         opt => opt.MapFrom(src => src.Transactions.Select(t => t.Hash)))
-                    .ForMember(dest => dest.ParentHash, opt => opt.MapFrom(src => src.ParentBlock.Hash));
+                    .ForMember(dest => dest.ParentHash, opt => opt.MapFrom(src => src.ParentBlock.Hash))
+                    .ForMember(dest => dest.ChildHash, opt => opt.MapFrom(src => src.ChildBlock.Hash));
 
                 cfg.CreateMap<Transaction, TransactionResponseDto>(MemberList.Destination)
                     .ForMember(dest => dest.BlockHash, opt => opt.MapFrom(src => src.Block.Hash))
