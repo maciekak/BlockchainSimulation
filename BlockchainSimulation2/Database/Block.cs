@@ -5,8 +5,9 @@ namespace BlockchainSimulation2.Database
 {
     public class Block
     {
+        public int Id { get; set; }
         public string Hash { get; set; }
-        public DateTime Mined { get; set; }
+        public DateTime MinedDate { get; set; }
         public int TransactionCount { get; set; }
         public double Size { get; set; }
         public decimal AwardForMining { get; set; }
