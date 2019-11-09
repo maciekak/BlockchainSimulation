@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using BlockchainSimulation2.Database;
 using BlockchainSimulation2.Dtos;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlockchainSimulation2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class BlockchainController : ControllerBase
     {
         private readonly DatabaseContext _context;
@@ -26,6 +28,7 @@ namespace BlockchainSimulation2.Controllers
 
         // GET: api/blockchain/init
         [HttpGet("init")]
+        
         public void Init()
         {
             var block1 = new Block
@@ -180,13 +183,14 @@ namespace BlockchainSimulation2.Controllers
 
         // GET: api/blockchain/blocks
         [HttpGet("blocks")]
+        
         public IEnumerable<BlockResponseDto> Get()
         {
             return _context.Blocks.OrderByDescending(b => b.MinedDate).ToResponseDto();
         }
 
         // GET: api/blockchain/0x2face0x
-        [HttpGet("block/{hash}")]
+        [HttpGet("blocks/{hash}")]
         public BlockResponseDto Get(string hash)
         {
             return _context.Blocks.FirstOrDefault(b => b.Hash == hash)?.ToResponseDto();
@@ -194,13 +198,14 @@ namespace BlockchainSimulation2.Controllers
 
         // GET: api/blockchain/blocks
         [HttpGet("transactions")]
+        [EnableCors("AllowAll")]
         public IEnumerable<TransactionResponseDto> GetTransactions()
         {
             return _context.Transactions.OrderByDescending(t => t.TransactionDate).ToResponseDto();
         }
 
         // GET: api/blockchain/0x2face0x
-        [HttpGet("transaction/{hash}")]
+        [HttpGet("transactions/{hash}")]
         public TransactionResponseDto GetTransaction(string hash)
         {
             return _context.Transactions.FirstOrDefault(b => b.Hash == hash)?.ToResponseDto();
@@ -214,7 +219,7 @@ namespace BlockchainSimulation2.Controllers
         }
 
         // GET: api/blockchain/0x2face0x
-        [HttpGet("client/{hash}")]
+        [HttpGet("clients/{hash}")]
         public ClientResponseDto GetMiner(string hash)
         {
             return _context.Clients.FirstOrDefault(b => b.Hash == hash).ToResponseDto();

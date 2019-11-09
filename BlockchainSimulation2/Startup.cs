@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using BlockchainSimulation2.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,11 +28,10 @@ namespace BlockchainSimulation2
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
-            services.AddSingleton<DatabaseContext>();
+            services.AddMvc();
             services.AddCors(options => options.AddPolicy("Policy",
                 builder => { builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin(); }));
+            services.AddSingleton<DatabaseContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,8 +42,9 @@ namespace BlockchainSimulation2
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
             app.UseCors("Policy");
+            app.UseMvc();
+
         }
     }
 }

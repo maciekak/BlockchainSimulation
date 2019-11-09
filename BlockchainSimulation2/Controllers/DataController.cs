@@ -36,7 +36,7 @@ namespace BlockchainSimulation2.Controllers
             };
 
             var transactions = _context.Transactions
-                .Where(t => dto.TransactionsHashes.Contains(t.Hash))
+                .Where(t => dto.TransactionsHashes?.Contains(t.Hash) == true)
                 .ToList();
 
             transactions.ForEach(t => t.Block = block);
@@ -102,7 +102,7 @@ namespace BlockchainSimulation2.Controllers
             };
 
             var blocks = _context.Blocks
-                .Where(b => dto.MinedBlocksHashes.Contains(b.Hash))
+                .Where(b => dto.MinedBlocksHashes?.Contains(b.Hash) == true)
                 .ToList();
 
             blocks.ForEach(b => b.Miner = client);
