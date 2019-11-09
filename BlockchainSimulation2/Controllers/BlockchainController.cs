@@ -36,6 +36,7 @@ namespace BlockchainSimulation2.Controllers
                 TransactionCount = 18,
                 Size = 32.3,
                 AwardForMining = 2,
+                GasAmount = 12.3,
                 TotalSentAmount = 4,
                 TotalReceivedAmount = 3,
                 TotalBalance = -1,
@@ -49,6 +50,7 @@ namespace BlockchainSimulation2.Controllers
                 TransactionCount = 5,
                 Size = 355.3,
                 AwardForMining = 2,
+                GasAmount = 122.3,
                 TotalSentAmount = 1,
                 TotalReceivedAmount = 5,
                 TotalBalance = 4,
@@ -62,6 +64,7 @@ namespace BlockchainSimulation2.Controllers
                 TransactionCount = 1,
                 Size = 2.3,
                 AwardForMining = 2,
+                GasAmount = 1.3,
                 TotalSentAmount = 23,
                 TotalReceivedAmount = 1,
                 TotalBalance = -22,
@@ -72,25 +75,29 @@ namespace BlockchainSimulation2.Controllers
             {
                 Hash = GetGuid(),
                 Date = DateTime.Now.AddMonths(-2),
-                Amount = 12.233m
+                GasAmount = 0.3,
+                MoneyAmount = 12.233m
             };
             var transaction2 = new Transaction
             {
                 Hash = GetGuid(),
                 Date = DateTime.Now.AddMonths(-1),
-                Amount = 1.233m
+                GasAmount = 0.8,
+                MoneyAmount = 1.233m
             };
             var transaction3 = new Transaction
             {
                 Hash = GetGuid(),
                 Date = DateTime.Now.AddMonths(-22),
-                Amount = 158.233m
+                GasAmount = 0.6,
+                MoneyAmount = 158.233m
             };
             var transaction4 = new Transaction
             {
                 Hash = GetGuid(),
                 Date = DateTime.Now.AddMonths(-23),
-                Amount = 1222.23m
+                GasAmount = 0.1,
+                MoneyAmount = 1222.23m
             };
 
             var miner1 = new Miner
@@ -120,6 +127,9 @@ namespace BlockchainSimulation2.Controllers
                 Transactions = new List<Transaction>(),
                 MinedBlocks = new List<Block>()
             };
+
+            block2.ParentBlock = block1;
+            block3.ParentBlock = block2;
 
             block1.Transactions.Add(transaction1);
             block2.Transactions.Add(transaction2);

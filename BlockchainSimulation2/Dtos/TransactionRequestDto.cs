@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace BlockchainSimulation2.Dtos
+﻿namespace BlockchainSimulation2.Dtos
 {
-    public class TransactionResponseDto
+    public class TransactionRequestDto
     {
         public string Hash { get; set; }
         public string Date { get; set; }
