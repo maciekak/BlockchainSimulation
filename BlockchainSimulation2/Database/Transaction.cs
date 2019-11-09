@@ -5,7 +5,7 @@ namespace BlockchainSimulation2.Database
     public class Transaction
     {
         public string Hash { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime TransactionDate { get; set; }
         public decimal MoneyAmount { get; set; }
         public double GasAmount { get; set; }
 

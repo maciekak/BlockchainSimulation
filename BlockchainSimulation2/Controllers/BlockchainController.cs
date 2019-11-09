@@ -74,28 +74,28 @@ namespace BlockchainSimulation2.Controllers
             var transaction1 = new Transaction
             {
                 Hash = GetGuid(),
-                Date = DateTime.Now.AddMonths(-2),
+                TransactionDate = DateTime.Now.AddMonths(-2),
                 GasAmount = 0.3,
                 MoneyAmount = 12.233m
             };
             var transaction2 = new Transaction
             {
                 Hash = GetGuid(),
-                Date = DateTime.Now.AddMonths(-1),
+                TransactionDate = DateTime.Now.AddMonths(-1),
                 GasAmount = 0.8,
                 MoneyAmount = 1.233m
             };
             var transaction3 = new Transaction
             {
                 Hash = GetGuid(),
-                Date = DateTime.Now.AddMonths(-22),
+                TransactionDate = DateTime.Now.AddMonths(-22),
                 GasAmount = 0.6,
                 MoneyAmount = 158.233m
             };
             var transaction4 = new Transaction
             {
                 Hash = GetGuid(),
-                Date = DateTime.Now.AddMonths(-23),
+                TransactionDate = DateTime.Now.AddMonths(-23),
                 GasAmount = 0.1,
                 MoneyAmount = 1222.23m
             };
@@ -196,7 +196,7 @@ namespace BlockchainSimulation2.Controllers
         [HttpGet("transactions")]
         public IEnumerable<TransactionResponseDto> GetTransactions()
         {
-            return _context.Transactions.OrderByDescending(t => t.Date).ToResponseDto();
+            return _context.Transactions.OrderByDescending(t => t.TransactionDate).ToResponseDto();
         }
 
         // GET: api/blockchain/0x2face0x

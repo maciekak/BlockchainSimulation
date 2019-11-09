@@ -64,7 +64,7 @@ namespace BlockchainSimulation2.Controllers
             var transaction = new Transaction
             {
                 Hash = dto.Hash,
-                Date = dto.Date,
+                TransactionDate = dto.TransactionDate,
                 GasAmount = dto.GasAmount,
                 MoneyAmount = dto.MoneyAmount
             };
