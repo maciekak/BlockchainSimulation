@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BlockchainSimulation2.Database;
 using BlockchainSimulation2.Dtos;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlockchainSimulation2.Controllers
@@ -24,11 +23,8 @@ namespace BlockchainSimulation2.Controllers
         {
             return Guid.NewGuid().ToString("N").ToUpper();
         }
-
-
         // GET: api/blockchain/init
         [HttpGet("init")]
-        
         public void Init()
         {
             var block1 = new Block
@@ -198,7 +194,6 @@ namespace BlockchainSimulation2.Controllers
 
         // GET: api/blockchain/blocks
         [HttpGet("transactions")]
-        [EnableCors("AllowAll")]
         public IEnumerable<TransactionResponseDto> GetTransactions()
         {
             return _context.Transactions.OrderByDescending(t => t.TransactionDate).ToResponseDto();

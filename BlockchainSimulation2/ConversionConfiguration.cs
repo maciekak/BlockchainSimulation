@@ -16,28 +16,34 @@ namespace BlockchainSimulation2
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Block, BlockResponseDto>(MemberList.Destination)
-                    .ForMember(dest => dest.MinerHash, 
+                    .ForMember(dest => dest.MinerHash,
                         opt => opt.MapFrom(src => src.Miner.Hash))
                     .ForMember(dest => dest.TransactionsHashes,
                         opt => opt.MapFrom(src => src.Transactions.Select(t => t.Hash)))
-                    .ForMember(dest => dest.ParentHash, 
+                    .ForMember(dest => dest.ParentHash,
                         opt => opt.MapFrom(src => src.ParentBlock.Hash))
-                    .ForMember(dest => dest.ChildHash, 
-                        opt => opt.MapFrom(src => src.ChildBlock.Hash));
+                    .ForMember(dest => dest.ChildHash,
+                        opt => opt.MapFrom(src => src.ChildBlock.Hash))
+                    .ForMember(dest => dest.TransactionCount,
+                        opt => opt.MapFrom(src => src.Transactions.Count));
 
                 cfg.CreateMap<Transaction, TransactionResponseDto>(MemberList.Destination)
-                    .ForMember(dest => dest.BlockHash, 
+                    .ForMember(dest => dest.BlockHash,
                         opt => opt.MapFrom(src => src.Block.Hash))
                     .ForMember(dest => dest.DestinationClientHash,
                         opt => opt.MapFrom(src => src.DestinationClient.Hash))
-                    .ForMember(dest => dest.SourceClientHash, 
+                    .ForMember(dest => dest.SourceClientHash,
                         opt => opt.MapFrom(src => src.SourceClient.Hash));
 
                 cfg.CreateMap<Client, ClientResponseDto>(MemberList.Destination)
                     .ForMember(dest => dest.MinedBlocksHashes,
                         opt => opt.MapFrom(src => src.MinedBlocks.Select(m => m.Hash)))
                     .ForMember(dest => dest.TransactionsHashes,
-                        opt => opt.MapFrom(src => src.Transactions.Select(m => m.Hash)));
+                        opt => opt.MapFrom(src => src.Transactions.Select(m => m.Hash)))
+                    .ForMember(dest => dest.TransactionsCount,
+                        opt => opt.MapFrom(src => src.Transactions.Count))
+                    .ForMember(dest => dest.MinedBlocksCount,
+                        opt => opt.MapFrom(src => src.MinedBlocks.Count));
 
                 cfg.CreateMap<DateTime, string>()
                     .ConvertUsing(date => date.ToString("d.MM.yyyy h:mm:ss"));

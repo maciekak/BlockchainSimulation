@@ -23,7 +23,7 @@ namespace BlockchainSimulation2.Controllers
         {
             var block = new Block
             {
-                Id = dto.Id,
+                Id = _context.GetNextId(),
                 Hash = dto.Hash,
                 MinedDate = dto.MinedDate,
                 TransactionCount = dto.TransactionCount,
@@ -51,10 +51,16 @@ namespace BlockchainSimulation2.Controllers
             var client = _context.Clients
                 .FirstOrDefault(c => c.Hash == dto.MinerHash);
 
-            client?.MinedBlocks.Add(block);
+            if (client?.MinedBlocks.All(b => b.Hash != block.Hash) == true)
+            {
+                client.MinedBlocks.Add(block);
+            }
             block.Miner = client;
 
-            _context.Blocks.Add(block);
+            if (_context.Blocks.All(b => b.Hash != block.Hash))
+            {
+                _context.Blocks.Add(block);
+            }
         }
 
         // POST: api/data/add/transaction
@@ -69,10 +75,12 @@ namespace BlockchainSimulation2.Controllers
                 MoneyAmount = dto.MoneyAmount
             };
 
-            //TODO: something can go wrong here
             var block = _context.Blocks.FirstOrDefault(b => b.Hash == dto.BlockHash);
             transaction.Block = block;
-            block?.Transactions.Add(transaction);
+            if (block?.Transactions.All(t => t.Hash != transaction.Hash) == true)
+            {
+                block.Transactions.Add(transaction);
+            }
 
             var sourceClient = _context.Clients
                 .FirstOrDefault(m => m.Hash == dto.SourceClientHash);
@@ -82,10 +90,19 @@ namespace BlockchainSimulation2.Controllers
 
             transaction.SourceClient = sourceClient;
             transaction.DestinationClient = destinationClient;
-            sourceClient?.Transactions.Add(transaction);
-            destinationClient?.Transactions.Add(transaction);
+            if (sourceClient?.Transactions.All(t => t.Hash != transaction.Hash) == true)
+            {
+                sourceClient.Transactions.Add(transaction);
+            }
+            if (destinationClient?.Transactions.All(t => t.Hash != transaction.Hash) == true)
+            {
+                destinationClient.Transactions.Add(transaction);
+            }
 
-            _context.Transactions.Add(transaction);
+            if (_context.Transactions.All(t => t.Hash != transaction.Hash))
+            {
+                _context.Transactions.Add(transaction);
+            }
         }
 
         // POST: api/data/add/client
@@ -108,7 +125,11 @@ namespace BlockchainSimulation2.Controllers
             blocks.ForEach(b => b.Miner = client);
             client.MinedBlocks = blocks;
 
-            _context.Clients.Add(client);
+
+            if (_context.Clients.All(c => c.Hash != client.Hash))
+            {
+                _context.Clients.Add(client);
+            }
         }
     }
 }

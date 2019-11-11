@@ -11,6 +11,8 @@ namespace BlockchainSimulation2.Database
 
         private readonly IMemoryCache _memoryCache;
 
+        private int _counter = 1;
+
         public DatabaseContext(IMemoryCache memoryCache)
         {
             _memoryCache = memoryCache;
@@ -25,5 +27,10 @@ namespace BlockchainSimulation2.Database
         public ICollection<Block> Blocks => (ICollection<Block>)_memoryCache.Get(BlocksKey);
 
         public ICollection<Client> Clients => (ICollection<Client>)_memoryCache.Get(ClientsKey);
+
+        public int GetNextId()
+        {
+            return _counter++;
+        }
     }
 }

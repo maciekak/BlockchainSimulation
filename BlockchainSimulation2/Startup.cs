@@ -44,7 +44,6 @@ namespace BlockchainSimulation2
 
             app.UseCors("Policy");
             app.UseMvc();
-
         }
     }
 }

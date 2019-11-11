@@ -28,7 +28,7 @@
     },
     "Docker": {
       "commandName": "Docker",
-      "launchBrowser": false,
+      "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/blockchain/init",
       "environmentVariables": {},
       "httpPort": 51419
