@@ -21,45 +21,49 @@ namespace BlockchainSimulation2.Controllers
         [HttpPost("add/block")]
         public void Post([FromBody] BlockRequestDto dto)
         {
-            var block = new Block
+            lock (_context)
             {
-                Id = _context.GetNextId(),
-                Hash = dto.Hash,
-                MinedDate = dto.MinedDate,
-                TransactionCount = dto.TransactionCount,
-                Size = dto.Size,
-                AwardForMining = dto.AwardForMining,
-                GasAmount = dto.GasAmount,
-                TotalSentAmount = dto.TotalSentAmount,
-                TotalReceivedAmount = dto.TotalReceivedAmount,
-                TotalBalance = dto.TotalBalance
-            };
+                var block = new Block
+                {
+                    Id = _context.GetNextId(),
+                    Hash = dto.Hash,
+                    MinedDate = dto.MinedDate,
+                    TransactionCount = dto.TransactionCount,
+                    Size = dto.Size,
+                    AwardForMining = dto.AwardForMining,
+                    GasAmount = dto.GasAmount,
+                    TotalSentAmount = dto.TotalSentAmount,
+                    TotalReceivedAmount = dto.TotalReceivedAmount,
+                    TotalBalance = dto.TotalBalance
+                };
 
-            var transactions = _context.Transactions
-                .Where(t => dto.TransactionsHashes?.Contains(t.Hash) == true)
-                .ToList();
+                var transactions = _context.Transactions
+                    .Where(t => dto.TransactionsHashes?.Contains(t.Hash) == true)
+                    .ToList();
 
-            transactions.ForEach(t => t.Block = block);
-            block.Transactions = transactions;
+                transactions.ForEach(t => t.Block = block);
+                block.Transactions = transactions;
 
-            var parentBlock = _context.Blocks
-                .FirstOrDefault(b => b.Hash == dto.ParentHash);
+                var parentBlock = _context.Blocks
+                    .FirstOrDefault(b => b.Hash == dto.ParentHash);
 
-            if (parentBlock != null) parentBlock.ChildBlock = block;
-            block.ParentBlock = parentBlock;
+                if (parentBlock != null) parentBlock.ChildBlock = block;
+                block.ParentBlock = parentBlock;
 
-            var client = _context.Clients
-                .FirstOrDefault(c => c.Hash == dto.MinerHash);
+                var client = _context.Clients
+                    .FirstOrDefault(c => c.Hash == dto.MinerHash);
 
-            if (client?.MinedBlocks.All(b => b.Hash != block.Hash) == true)
-            {
-                client.MinedBlocks.Add(block);
-            }
-            block.Miner = client;
+                if (client?.MinedBlocks.All(b => b.Hash != block.Hash) == true)
+                {
+                    client.MinedBlocks.Add(block);
+                }
 
-            if (_context.Blocks.All(b => b.Hash != block.Hash))
-            {
-                _context.Blocks.Add(block);
+                block.Miner = client;
+
+                if (_context.Blocks.All(b => b.Hash != block.Hash))
+                {
+                    _context.Blocks.Add(block);
+                }
             }
         }
 
@@ -67,41 +71,45 @@ namespace BlockchainSimulation2.Controllers
         [HttpPost("add/transaction")]
         public void Post([FromBody] TransactionRequestDto dto)
         {
-            var transaction = new Transaction
+            lock (_context)
             {
-                Hash = dto.Hash,
-                TransactionDate = dto.TransactionDate,
-                GasAmount = dto.GasAmount,
-                MoneyAmount = dto.MoneyAmount
-            };
+                var transaction = new Transaction
+                {
+                    Hash = dto.Hash,
+                    TransactionDate = dto.TransactionDate,
+                    GasAmount = dto.GasAmount,
+                    MoneyAmount = dto.MoneyAmount
+                };
 
-            var block = _context.Blocks.FirstOrDefault(b => b.Hash == dto.BlockHash);
-            transaction.Block = block;
-            if (block?.Transactions.All(t => t.Hash != transaction.Hash) == true)
-            {
-                block.Transactions.Add(transaction);
-            }
+                var block = _context.Blocks.FirstOrDefault(b => b.Hash == dto.BlockHash);
+                transaction.Block = block;
+                if (block?.Transactions.All(t => t.Hash != transaction.Hash) == true)
+                {
+                    block.Transactions.Add(transaction);
+                }
 
-            var sourceClient = _context.Clients
-                .FirstOrDefault(m => m.Hash == dto.SourceClientHash);
+                var sourceClient = _context.Clients
+                    .FirstOrDefault(m => m.Hash == dto.SourceClientHash);
 
-            var destinationClient = _context.Clients
-                .FirstOrDefault(m => m.Hash == dto.DestinationClientHash);
+                var destinationClient = _context.Clients
+                    .FirstOrDefault(m => m.Hash == dto.DestinationClientHash);
 
-            transaction.SourceClient = sourceClient;
-            transaction.DestinationClient = destinationClient;
-            if (sourceClient?.Transactions.All(t => t.Hash != transaction.Hash) == true)
-            {
-                sourceClient.Transactions.Add(transaction);
-            }
-            if (destinationClient?.Transactions.All(t => t.Hash != transaction.Hash) == true)
-            {
-                destinationClient.Transactions.Add(transaction);
-            }
+                transaction.SourceClient = sourceClient;
+                transaction.DestinationClient = destinationClient;
+                if (sourceClient?.Transactions.All(t => t.Hash != transaction.Hash) == true)
+                {
+                    sourceClient.Transactions.Add(transaction);
+                }
 
-            if (_context.Transactions.All(t => t.Hash != transaction.Hash))
-            {
-                _context.Transactions.Add(transaction);
+                if (destinationClient?.Transactions.All(t => t.Hash != transaction.Hash) == true)
+                {
+                    destinationClient.Transactions.Add(transaction);
+                }
+
+                if (_context.Transactions.All(t => t.Hash != transaction.Hash))
+                {
+                    _context.Transactions.Add(transaction);
+                }
             }
         }
 
@@ -109,26 +117,28 @@ namespace BlockchainSimulation2.Controllers
         [HttpPost("add/client")]
         public void Post([FromBody] ClientRequestDto dto)
         {
-            var client = new Client
+            lock (_context)
             {
-                Hash = dto.Hash,
-                Type = dto.Type,
-                Amount = dto.Amount,
-                StartDate = dto.StartDate,
-                Transactions = new List<Transaction>()
-            };
+                var client = new Client
+                {
+                    Hash = dto.Hash,
+                    Type = dto.Type,
+                    Amount = dto.Amount,
+                    StartDate = dto.StartDate,
+                    Transactions = new List<Transaction>()
+                };
+                var blocks = _context.Blocks
+                    .Where(b => dto.MinedBlocksHashes?.Contains(b.Hash) == true)
+                    .ToList();
 
-            var blocks = _context.Blocks
-                .Where(b => dto.MinedBlocksHashes?.Contains(b.Hash) == true)
-                .ToList();
-
-            blocks.ForEach(b => b.Miner = client);
-            client.MinedBlocks = blocks;
+                blocks.ForEach(b => b.Miner = client);
+                client.MinedBlocks = blocks;
 
 
-            if (_context.Clients.All(c => c.Hash != client.Hash))
-            {
-                _context.Clients.Add(client);
+                if (_context.Clients.All(c => c.Hash != client.Hash))
+                {
+                    _context.Clients.Add(client);
+                }
             }
         }
     }
