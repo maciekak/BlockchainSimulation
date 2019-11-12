@@ -35,7 +35,8 @@ namespace BlockchainSimulation2
                         {
                             Hash = t.Hash,
                             MoneyAmount = t.MoneyAmount,
-                            TransactionDate = t.TransactionDate.ToString("d.MM.yyyy h:mm:ss")
+                            TransactionDate = t.TransactionDate.ToString("d.MM.yyyy H:mm:ss"),
+                            BlockHash = t.Block.Hash
                         })))
                     .ForMember(dest => dest.ParentHash,
                         opt => opt.MapFrom(src => src.ParentBlock.Hash))
@@ -67,7 +68,7 @@ namespace BlockchainSimulation2
                         opt => opt.MapFrom(src => src.MinedBlocks.Select(m => new BlockSimpleResponseDto
                         {
                             Hash = m.Hash,
-                            MinedDate = m.MinedDate.ToString("d.MM.yyyy h:mm:ss"),
+                            MinedDate = m.MinedDate.ToString("d.MM.yyyy H:mm:ss"),
                             Size = m.Size,
                             TransactionCount = m.Transactions.Count
                         })))
@@ -76,7 +77,7 @@ namespace BlockchainSimulation2
                         {
                             Hash = m.Hash,
                             MoneyAmount = m.MoneyAmount,
-                            TransactionDate = m.TransactionDate.ToString("d.MM.yyyy h:mm:ss"),
+                            TransactionDate = m.TransactionDate.ToString("d.MM.yyyy H:mm:ss"),
                             BlockHash = m.Block.Hash,
                         })))
                     .ForMember(dest => dest.TransactionsCount,
@@ -85,7 +86,7 @@ namespace BlockchainSimulation2
                         opt => opt.MapFrom(src => src.MinedBlocks.Count));
 
                 cfg.CreateMap<DateTime, string>()
-                    .ConvertUsing(date => date.ToString("d.MM.yyyy h:mm:ss"));
+                    .ConvertUsing(date => date.ToString("d.MM.yyyy H:mm:ss"));
             });
 
             _mapper = config.CreateMapper();
