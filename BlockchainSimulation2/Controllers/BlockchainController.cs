@@ -23,6 +23,18 @@ namespace BlockchainSimulation2.Controllers
         {
             return Guid.NewGuid().ToString("N").ToUpper();
         }
+
+        // GET: api/blockchain/clear
+        [HttpGet("clear")]
+        public void Clear()
+        {
+            lock (_context)
+            {
+                _context.Blocks.Clear();
+                _context.Clients.Clear();
+                _context.Transactions.Clear();
+            }
+        }
         // GET: api/blockchain/init
         [HttpGet("init")]
         public void Init()
