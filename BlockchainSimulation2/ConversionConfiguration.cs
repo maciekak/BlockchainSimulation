@@ -62,6 +62,28 @@ namespace BlockchainSimulation2
                     .ForMember(dest => dest.MinedBlocksCount,
                         opt => opt.MapFrom(src => src.MinedBlocks.Count));
 
+                cfg.CreateMap<Client, ClientDetailsResponseDto>(MemberList.Destination)
+                    .ForMember(dest => dest.MinedBlocksHashes,
+                        opt => opt.MapFrom(src => src.MinedBlocks.Select(m => new BlockSimpleResponseDto
+                        {
+                            Hash = m.Hash,
+                            MinedDate = m.MinedDate.ToString("d.MM.yyyy h:mm:ss"),
+                            Size = m.Size,
+                            TransactionCount = m.Transactions.Count
+                        })))
+                    .ForMember(dest => dest.TransactionsHashes,
+                        opt => opt.MapFrom(src => src.Transactions.Select(m => new TransactionSimpleResponseDto
+                        {
+                            Hash = m.Hash,
+                            MoneyAmount = m.MoneyAmount,
+                            TransactionDate = m.TransactionDate.ToString("d.MM.yyyy h:mm:ss"),
+                            BlockHash = m.Block.Hash,
+                        })))
+                    .ForMember(dest => dest.TransactionsCount,
+                        opt => opt.MapFrom(src => src.Transactions.Count))
+                    .ForMember(dest => dest.MinedBlocksCount,
+                        opt => opt.MapFrom(src => src.MinedBlocks.Count));
+
                 cfg.CreateMap<DateTime, string>()
                     .ConvertUsing(date => date.ToString("d.MM.yyyy h:mm:ss"));
             });
@@ -84,9 +106,9 @@ namespace BlockchainSimulation2
             return _mapper.Map<IEnumerable<Client>, IEnumerable<ClientResponseDto>>(from);
         }
 
-        public static ClientResponseDto ToResponseDto(this Client from)
+        public static ClientDetailsResponseDto ToResponseDto(this Client from)
         {
-            return _mapper.Map<Client, ClientResponseDto>(from);
+            return _mapper.Map<Client, ClientDetailsResponseDto>(from);
         }
 
         public static IEnumerable<TransactionResponseDto> ToResponseDto(this IEnumerable<Transaction> from)

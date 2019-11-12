@@ -215,7 +215,7 @@ namespace BlockchainSimulation2.Controllers
 
         // GET: api/blockchain/0x2face0x
         [HttpGet("clients/{hash}")]
-        public ClientResponseDto GetMiner(string hash)
+        public ClientDetailsResponseDto GetMiner(string hash)
         {
             return _context.Clients.FirstOrDefault(b => b.Hash == hash).ToResponseDto();
         }
