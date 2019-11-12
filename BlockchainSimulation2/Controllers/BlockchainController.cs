@@ -187,7 +187,7 @@ namespace BlockchainSimulation2.Controllers
 
         // GET: api/blockchain/0x2face0x
         [HttpGet("blocks/{hash}")]
-        public BlockResponseDto Get(string hash)
+        public BlockDetailsResponseDto Get(string hash)
         {
             return _context.Blocks.FirstOrDefault(b => b.Hash == hash)?.ToResponseDto();
         }
