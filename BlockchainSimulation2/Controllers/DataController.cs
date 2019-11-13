@@ -154,7 +154,6 @@ namespace BlockchainSimulation2.Controllers
                     foundClient.Hash = dto.Hash;
                     foundClient.Type = dto.Type;
                     foundClient.Amount = dto.Amount;
-                    foundClient.StartDate = dto.StartDate;
                     client = foundClient;
                 }
 

@@ -236,7 +236,7 @@ namespace BlockchainSimulation2.Controllers
         {
             lock (_context)
             {
-                return _context.Clients.OrderByDescending(m => m.Hash).ToResponseDto();
+                return _context.Clients.OrderByDescending(m => m.StartDate).ToResponseDto();
             }
         }
 
