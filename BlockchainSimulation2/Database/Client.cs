@@ -7,7 +7,7 @@ namespace BlockchainSimulation2.Database
     {
         public string Hash { get; set; }
         public ClientType Type { get; set; }
-        public decimal Amount { get; set; }
+        public string Amount { get; set; }
         public DateTime StartDate { get; set; }
 
         public ICollection<Transaction> Transactions { get; set; }

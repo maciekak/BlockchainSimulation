@@ -36,6 +36,19 @@ namespace BlockchainSimulation2.Controllers
                     TotalReceivedAmount = dto.TotalReceivedAmount,
                     TotalBalance = dto.TotalBalance
                 };
+                var foundBlock = _context.Blocks.FirstOrDefault(b => b.Hash == dto.Hash);
+                if (foundBlock != null)
+                {
+                    foundBlock.MinedDate = dto.MinedDate;
+                    foundBlock.TransactionCount = dto.TransactionCount;
+                    foundBlock.Size = dto.Size;
+                    foundBlock.AwardForMining = dto.AwardForMining;
+                    foundBlock.GasAmount = dto.GasAmount;
+                    foundBlock.TotalSentAmount = dto.TotalSentAmount;
+                    foundBlock.TotalReceivedAmount = dto.TotalReceivedAmount;
+                    foundBlock.TotalBalance = dto.TotalBalance;
+                    block = foundBlock;
+                }
 
                 var transactions = _context.Transactions
                     .Where(t => dto.TransactionsHashes?.Contains(t.Hash) == true)
@@ -80,6 +93,14 @@ namespace BlockchainSimulation2.Controllers
                     GasAmount = dto.GasAmount,
                     MoneyAmount = dto.MoneyAmount
                 };
+                var foundTransaction = _context.Transactions.FirstOrDefault(t => t.Hash == dto.Hash);
+                if (foundTransaction != null)
+                {
+                    foundTransaction.TransactionDate = dto.TransactionDate;
+                    foundTransaction.GasAmount = dto.GasAmount;
+                    foundTransaction.MoneyAmount = dto.MoneyAmount;
+                    transaction = foundTransaction;
+                }
 
                 var block = _context.Blocks.FirstOrDefault(b => b.Hash == dto.BlockHash);
                 transaction.Block = block;
@@ -127,13 +148,22 @@ namespace BlockchainSimulation2.Controllers
                     StartDate = dto.StartDate,
                     Transactions = new List<Transaction>()
                 };
+                var foundClient = _context.Clients.FirstOrDefault(c => c.Hash == dto.Hash);
+                if (foundClient != null)
+                {
+                    foundClient.Hash = dto.Hash;
+                    foundClient.Type = dto.Type;
+                    foundClient.Amount = dto.Amount;
+                    foundClient.StartDate = dto.StartDate;
+                    client = foundClient;
+                }
+
                 var blocks = _context.Blocks
                     .Where(b => dto.MinedBlocksHashes?.Contains(b.Hash) == true)
                     .ToList();
 
                 blocks.ForEach(b => b.Miner = client);
                 client.MinedBlocks = blocks;
-
 
                 if (_context.Clients.All(c => c.Hash != client.Hash))
                 {

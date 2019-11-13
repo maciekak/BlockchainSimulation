@@ -6,7 +6,7 @@ namespace BlockchainSimulation2.Dtos
     {
         public string Hash { get; set; }
         public DateTime TransactionDate { get; set; }
-        public decimal MoneyAmount { get; set; }
+        public string MoneyAmount { get; set; }
         public double GasAmount { get; set; }
 
         public string SourceClientHash { get; set; }

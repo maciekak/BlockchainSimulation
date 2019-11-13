@@ -8,7 +8,7 @@ namespace BlockchainSimulation2.Dtos
     {
         public string Hash { get; set; }
         public ClientType Type { get; set; }
-        public decimal Amount { get; set; }
+        public string Amount { get; set; }
         public DateTime StartDate { get; set; }
 
         public IEnumerable<string> TransactionsHashes { get; set; }
