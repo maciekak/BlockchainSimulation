@@ -12,6 +12,8 @@ namespace BlockchainSimulation2.Dtos
         public ClientType Type { get; set; }
         public string Amount { get; set; }
         public string StartDate { get; set; }
+        public bool IsNew { get; set; }
+        public bool Updated { get; set; }
 
         public int TransactionsCount { get; set; }
         public IEnumerable<TransactionSimpleResponseDto> TransactionsHashes { get; set; }

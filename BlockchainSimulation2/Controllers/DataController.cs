@@ -34,7 +34,8 @@ namespace BlockchainSimulation2.Controllers
                     GasAmount = dto.GasAmount,
                     TotalSentAmount = dto.TotalSentAmount,
                     TotalReceivedAmount = dto.TotalReceivedAmount,
-                    TotalBalance = dto.TotalBalance
+                    TotalBalance = dto.TotalBalance,
+                    IsNew = true
                 };
                 var foundBlock = _context.Blocks.FirstOrDefault(b => b.Hash == dto.Hash);
                 if (foundBlock != null)
@@ -47,6 +48,7 @@ namespace BlockchainSimulation2.Controllers
                     foundBlock.TotalSentAmount = dto.TotalSentAmount;
                     foundBlock.TotalReceivedAmount = dto.TotalReceivedAmount;
                     foundBlock.TotalBalance = dto.TotalBalance;
+                    foundBlock.Updated = true;
                     block = foundBlock;
                 }
 
@@ -54,13 +56,21 @@ namespace BlockchainSimulation2.Controllers
                     .Where(t => dto.TransactionsHashes?.Contains(t.Hash) == true)
                     .ToList();
 
-                transactions.ForEach(t => t.Block = block);
+                transactions.ForEach(t =>
+                {
+                    t.Block = block;
+                    t.Updated = true;
+                });
                 block.Transactions = transactions;
 
                 var parentBlock = _context.Blocks
                     .FirstOrDefault(b => b.Hash == dto.ParentHash);
 
-                if (parentBlock != null) parentBlock.ChildBlock = block;
+                if (parentBlock != null)
+                {
+                    parentBlock.ChildBlock = block;
+                    parentBlock.Updated = true;
+                }
                 block.ParentBlock = parentBlock;
 
                 var client = _context.Clients
@@ -68,6 +78,7 @@ namespace BlockchainSimulation2.Controllers
 
                 if (client?.MinedBlocks.All(b => b.Hash != block.Hash) == true)
                 {
+                    client.Updated = true;
                     client.MinedBlocks.Add(block);
                 }
 
@@ -91,7 +102,8 @@ namespace BlockchainSimulation2.Controllers
                     Hash = dto.Hash,
                     TransactionDate = dto.TransactionDate,
                     GasAmount = dto.GasAmount,
-                    MoneyAmount = dto.MoneyAmount
+                    MoneyAmount = dto.MoneyAmount,
+                    IsNew = true
                 };
                 var foundTransaction = _context.Transactions.FirstOrDefault(t => t.Hash == dto.Hash);
                 if (foundTransaction != null)
@@ -99,6 +111,7 @@ namespace BlockchainSimulation2.Controllers
                     foundTransaction.TransactionDate = dto.TransactionDate;
                     foundTransaction.GasAmount = dto.GasAmount;
                     foundTransaction.MoneyAmount = dto.MoneyAmount;
+                    foundTransaction.Updated = true;
                     transaction = foundTransaction;
                 }
 
@@ -106,6 +119,7 @@ namespace BlockchainSimulation2.Controllers
                 transaction.Block = block;
                 if (block?.Transactions.All(t => t.Hash != transaction.Hash) == true)
                 {
+                    block.Updated = true;
                     block.Transactions.Add(transaction);
                 }
 
@@ -119,11 +133,13 @@ namespace BlockchainSimulation2.Controllers
                 transaction.DestinationClient = destinationClient;
                 if (sourceClient?.Transactions.All(t => t.Hash != transaction.Hash) == true)
                 {
+                    sourceClient.Updated = true;
                     sourceClient.Transactions.Add(transaction);
                 }
 
                 if (destinationClient?.Transactions.All(t => t.Hash != transaction.Hash) == true)
                 {
+                    destinationClient.Updated = true;
                     destinationClient.Transactions.Add(transaction);
                 }
 
@@ -146,7 +162,8 @@ namespace BlockchainSimulation2.Controllers
                     Type = dto.Type,
                     Amount = dto.Amount,
                     StartDate = dto.StartDate,
-                    Transactions = new List<Transaction>()
+                    Transactions = new List<Transaction>(),
+                    IsNew = true
                 };
                 var foundClient = _context.Clients.FirstOrDefault(c => c.Hash == dto.Hash);
                 if (foundClient != null)
@@ -154,6 +171,7 @@ namespace BlockchainSimulation2.Controllers
                     foundClient.Hash = dto.Hash;
                     foundClient.Type = dto.Type;
                     foundClient.Amount = dto.Amount;
+                    foundClient.Updated = true;
                     client = foundClient;
                 }
 
@@ -161,7 +179,11 @@ namespace BlockchainSimulation2.Controllers
                     .Where(b => dto.MinedBlocksHashes?.Contains(b.Hash) == true)
                     .ToList();
 
-                blocks.ForEach(b => b.Miner = client);
+                blocks.ForEach(b =>
+                {
+                    b.Miner = client;
+                    b.Updated = true;
+                });
                 client.MinedBlocks = blocks;
 
                 if (_context.Clients.All(c => c.Hash != client.Hash))

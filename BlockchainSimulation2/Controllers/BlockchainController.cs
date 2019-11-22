@@ -196,7 +196,15 @@ namespace BlockchainSimulation2.Controllers
         {
             lock(_context)
             {
-                return _context.Blocks.OrderByDescending(b => b.MinedDate).ToResponseDto();
+                var blocks = _context.Blocks.OrderByDescending(b => b.MinedDate).ToList();
+                var response = blocks.ToResponseDto();
+                blocks.ForEach(b =>
+                {
+                    b.IsNew = false;
+                    b.Updated = false;;
+                });
+
+                return response;
             }
         }
 
@@ -206,7 +214,15 @@ namespace BlockchainSimulation2.Controllers
         {
             lock (_context)
             {
-                return _context.Blocks.FirstOrDefault(b => b.Hash == hash)?.ToResponseDto();
+                var block = _context.Blocks.FirstOrDefault(b => b.Hash == hash);
+                var response = block?.ToResponseDto();
+
+                if (block == null) return null;
+
+                block.IsNew = false;
+                block.Updated = false;
+
+                return response;
             }
         }
 
@@ -216,7 +232,16 @@ namespace BlockchainSimulation2.Controllers
         {
             lock (_context)
             {
-                return _context.Transactions.OrderByDescending(t => t.TransactionDate).ToResponseDto();
+                var transactions = _context.Transactions.OrderByDescending(t => t.TransactionDate).ToList();
+                var response = transactions.ToResponseDto();
+
+                transactions.ForEach(t =>
+                {
+                    t.IsNew = false;
+                    t.Updated = false;
+                });
+
+                return response;
             }
         }
 
@@ -226,7 +251,16 @@ namespace BlockchainSimulation2.Controllers
         {
             lock (_context)
             {
-                return _context.Transactions.FirstOrDefault(b => b.Hash == hash)?.ToResponseDto();
+                var transaction = _context.Transactions.FirstOrDefault(b => b.Hash == hash);
+
+                if (transaction == null) return null;
+
+                var response = transaction.ToResponseDto();
+
+                transaction.IsNew = false;
+                transaction.Updated = false;
+
+                return response;
             }
         }
 
@@ -236,7 +270,16 @@ namespace BlockchainSimulation2.Controllers
         {
             lock (_context)
             {
-                return _context.Clients.OrderByDescending(m => m.StartDate).ToResponseDto();
+                var clients = _context.Clients.OrderByDescending(m => m.StartDate).ToList();
+                var response = clients.ToResponseDto();
+
+                clients.ForEach(c =>
+                {
+                    c.IsNew = false;
+                    c.Updated = false;
+                });
+
+                return response;
             }
         }
 
@@ -246,9 +289,16 @@ namespace BlockchainSimulation2.Controllers
         {
             lock (_context)
             {
-                return _context.Clients.FirstOrDefault(b => b.Hash == hash).ToResponseDto();
+                var client = _context.Clients.FirstOrDefault(b => b.Hash == hash);
+
+                if (client == null) return null;
+                var response = client.ToResponseDto();
+
+                response.IsNew = false;
+                response.Updated = false;
+
+                return response;
             }
         }
-
     }
 }
