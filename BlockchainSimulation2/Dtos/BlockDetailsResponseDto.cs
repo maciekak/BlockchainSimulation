@@ -13,8 +13,6 @@ namespace BlockchainSimulation2.Dtos
         public string TotalSentAmount { get; set; }
         public string TotalReceivedAmount { get; set; }
         public string TotalBalance { get; set; }
-        public bool IsNew { get; set; }
-        public bool Updated { get; set; }
 
         public string MinerHash { get; set; }
         public string ParentHash { get; set; }
