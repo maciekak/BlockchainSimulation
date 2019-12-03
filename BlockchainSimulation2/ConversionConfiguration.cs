@@ -25,7 +25,11 @@ namespace BlockchainSimulation2
                     .ForMember(dest => dest.ChildHash,
                         opt => opt.MapFrom(src => src.ChildBlock.Hash))
                     .ForMember(dest => dest.TransactionCount,
-                        opt => opt.MapFrom(src => src.Transactions.Count));
+                        opt => opt.MapFrom(src => src.Transactions.Count))
+                    .ForMember(dest => dest.IsNew,
+                    opt => opt.MapFrom(src => src.AddDate.AddSeconds(3) > DateTime.Now))
+                    .ForMember(dest => dest.Updated,
+                        opt => opt.MapFrom(src => src.UpdateDate.AddSeconds(3) > DateTime.Now));
 
                 cfg.CreateMap<Block, BlockDetailsResponseDto>(MemberList.Destination)
                     .ForMember(dest => dest.MinerHash,
@@ -43,7 +47,11 @@ namespace BlockchainSimulation2
                     .ForMember(dest => dest.ChildHash,
                         opt => opt.MapFrom(src => src.ChildBlock.Hash))
                     .ForMember(dest => dest.TransactionCount,
-                        opt => opt.MapFrom(src => src.Transactions.Count));
+                        opt => opt.MapFrom(src => src.Transactions.Count))
+                    .ForMember(dest => dest.IsNew,
+                        opt => opt.MapFrom(src => src.AddDate.AddSeconds(3) > DateTime.Now))
+                    .ForMember(dest => dest.Updated,
+                        opt => opt.MapFrom(src => src.UpdateDate.AddSeconds(3) > DateTime.Now));
 
                 cfg.CreateMap<Transaction, TransactionResponseDto>(MemberList.Destination)
                     .ForMember(dest => dest.BlockHash,
@@ -51,7 +59,11 @@ namespace BlockchainSimulation2
                     .ForMember(dest => dest.DestinationClientHash,
                         opt => opt.MapFrom(src => src.DestinationClient.Hash))
                     .ForMember(dest => dest.SourceClientHash,
-                        opt => opt.MapFrom(src => src.SourceClient.Hash));
+                        opt => opt.MapFrom(src => src.SourceClient.Hash))
+                    .ForMember(dest => dest.IsNew,
+                        opt => opt.MapFrom(src => src.AddDate.AddSeconds(3) > DateTime.Now))
+                    .ForMember(dest => dest.Updated,
+                        opt => opt.MapFrom(src => src.UpdateDate.AddSeconds(3) > DateTime.Now));
 
                 cfg.CreateMap<Client, ClientResponseDto>(MemberList.Destination)
                     .ForMember(dest => dest.MinedBlocksHashes,
@@ -61,7 +73,11 @@ namespace BlockchainSimulation2
                     .ForMember(dest => dest.TransactionsCount,
                         opt => opt.MapFrom(src => src.Transactions.Count))
                     .ForMember(dest => dest.MinedBlocksCount,
-                        opt => opt.MapFrom(src => src.MinedBlocks.Count));
+                        opt => opt.MapFrom(src => src.MinedBlocks.Count))
+                    .ForMember(dest => dest.IsNew,
+                        opt => opt.MapFrom(src => src.AddDate.AddSeconds(3) > DateTime.Now))
+                    .ForMember(dest => dest.Updated,
+                        opt => opt.MapFrom(src => src.UpdateDate.AddSeconds(3) > DateTime.Now));
 
                 cfg.CreateMap<Client, ClientDetailsResponseDto>(MemberList.Destination)
                     .ForMember(dest => dest.MinedBlocksHashes,
@@ -83,7 +99,11 @@ namespace BlockchainSimulation2
                     .ForMember(dest => dest.TransactionsCount,
                         opt => opt.MapFrom(src => src.Transactions.Count))
                     .ForMember(dest => dest.MinedBlocksCount,
-                        opt => opt.MapFrom(src => src.MinedBlocks.Count));
+                        opt => opt.MapFrom(src => src.MinedBlocks.Count))
+                    .ForMember(dest => dest.IsNew,
+                        opt => opt.MapFrom(src => src.AddDate.AddSeconds(3) > DateTime.Now))
+                    .ForMember(dest => dest.Updated,
+                        opt => opt.MapFrom(src => src.UpdateDate.AddSeconds(3) > DateTime.Now));
 
                 cfg.CreateMap<DateTime, string>()
                     .ConvertUsing(date => date.ToString("d.MM.yyyy H:mm:ss"));

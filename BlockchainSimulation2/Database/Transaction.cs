@@ -8,8 +8,8 @@ namespace BlockchainSimulation2.Database
         public DateTime TransactionDate { get; set; }
         public string MoneyAmount { get; set; }
         public double GasAmount { get; set; }
-        public bool IsNew { get; set; }
-        public bool Updated { get; set; }
+        public DateTime AddDate { get; set; }
+        public DateTime UpdateDate { get; set; }
 
         public Client SourceClient { get; set; }
         public Client DestinationClient { get; set; }

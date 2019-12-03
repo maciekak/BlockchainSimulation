@@ -15,8 +15,8 @@ namespace BlockchainSimulation2.Database
         public string TotalSentAmount { get; set; }
         public string TotalReceivedAmount { get; set; }
         public string TotalBalance { get; set; }
-        public bool IsNew { get; set; }
-        public bool Updated { get; set; }
+        public DateTime AddDate { get; set; }
+        public DateTime UpdateDate { get; set; }
 
         public Client Miner { get; set; }
         public Block ParentBlock { get; set; }
